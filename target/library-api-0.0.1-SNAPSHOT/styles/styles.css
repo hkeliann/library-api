@@ -1,0 +1,22 @@
+body {
+    background-color:#e1f5eb;
+}
+
+h1 {
+    font-family: Copperplate, fantasy, Georgia, 'Times New Roman', Times, serif;
+    font-size: 4em;
+}
+
+/*
+table{
+    background-color: hsla(0, 0%, 100%, 0.7);
+}
+*/
+
+.top-space {
+    margin-top: .5em;
+}
+
+.col-collapse {
+    visibility: visible;
+}
