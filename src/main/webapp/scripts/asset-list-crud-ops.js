@@ -105,6 +105,46 @@ function addAssetToTable(libAsset){
 }
 
 
+// Put manage asset form into the 'create' state when 'Add Asset' is clicked
+document.getElementById('new-asset-anchor').addEventListener('click', function(){
+    alert('New Asset clicked!');
+});
+
+
+// Put manage asset form into the 'update' state when 'Update Asset' is clicked
+document.getElementById('update-asset-anchor').addEventListener('click', function(){
+    alert('Update Asset clicked!');
+});
+
+
+// Put manage asset form into the 'update' state.  Load data into the form.
+// Called from anchor around pencil icon in the asset table
+function editIconClick(element) {
+    alert('Edit Icon clicked!');
+}
+
+
+// Put manage asset form into the 'delete' state when 'Delete Asset' is clicked
+document.getElementById('delete-asset-anchor').addEventListener('click', function(){
+    alert('Delete Asset clicked!');
+});
+
+
+// Delete the row and asset corresponding to the element
+// Called from anchor around trash icon in the asset table
+function deleteIconClick(element) {
+    alert('Delete Icon clicked!');
+}
+
+
+// handle the submit event from the manage asset form depending on the state of the form
+document.getElementById('manage-asset-form').addEventListener('submit', function(event){
+
+});
+
+/*
+
+
 
 
 // When the Save Asset button in the New Asset modal is clicked, put the values
@@ -444,3 +484,7 @@ function deleteFromIcon(element) {
     if(confirm('Are you sure you want to delete asset with ID ' + libAsset.assetId + '?'))
         deleteAsset(libAsset);
 }
+
+
+
+*/
