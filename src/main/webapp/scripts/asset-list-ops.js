@@ -428,6 +428,7 @@ document.getElementById('asset-id-input').addEventListener('focusout', function(
     
         if(rowToUpdate != null){
             fillAssetFormFromRow(rowToUpdate);
+            document.getElementById('asset-submit-button').disabled = false;
         }
         else{
             setDeleteFormState();
@@ -444,7 +445,6 @@ document.getElementById('asset-id-input').addEventListener('focusout', function(
 //      Set the disabled attribute of all form elements to the same thing
 //      If shouldDisable = true, everything is disabled.  If false, everything is enabled.
 function disableAssetForm(shouldDisable){
-    console.log('disableAssetForm() called');
     document.getElementById('asset-id-input').disabled = shouldDisable;
     document.getElementById('title-input').disabled = shouldDisable;
     document.getElementById('author-input').disabled = shouldDisable;
