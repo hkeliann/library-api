@@ -54,7 +54,7 @@ document.getElementById('manage-asset-form').addEventListener('submit', function
         updateAsset(libAsset);
     } else if ( state == 'delete'){
         // double-check that the asset should be deleted
-        if(confirm('Are you sure you want to delete asset with ID ' + delAssetId + '?'))
+        if(confirm('Are you sure you want to delete asset with ID ' + libAsset.assetId + '?'))
             deleteAsset(libAsset);
             setDeleteFormState();
     } else {
