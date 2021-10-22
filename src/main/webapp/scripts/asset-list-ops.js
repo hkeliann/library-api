@@ -163,7 +163,7 @@ function deleteIconClick(element) {
 /* ********************************************************* */
 
 // TABLE MANIPULATIONS
-//   load the table, add rows to the table, etc
+//   add/delete rows from the table, etc
 
 /* ********************************************************* */
 
