@@ -1,35 +1,30 @@
-// Retrieve data for the asset table when the page loads
+// Load asset table initially
 document.addEventListener("DOMContentLoaded", function() {
     refreshTable();
-
-    //setTimeout( () => deleteRowById(2), 4000);
 });
 
 
 
-//Refresh the table when the 'Refresh Table' option is clicked
+//Refresh the asset table when the 'Refresh Table' option is clicked
 document.getElementById('refresh-table-anchor').onclick = function() {
-    //console.log('Refresh anchor was clicked');
     refreshTable();
 }
 
 
 
-// refreshTable: Send an http get request and, if it completes, clear the asset table
-//  and reload all the newly retrieved assets
-//  this is basically the retrieveAll function
+//  Send get request, clear the asset table,
+//  and reload all retrieved assets
 function refreshTable() {
     let xhr = new XMLHttpRequest();
 
     xhr.onreadystatechange = function() {
         if(xhr.readyState === 4){
-            //console.log(JSON.parse(xhr.responseText));
-
             var assetList = JSON.parse(xhr.responseText);
 
+            // clear asset table
             document.getElementById('asset-list-body').innerHTML = '';
-            //console.log("Table body contents: \n" + document.getElementById('asset-list-body').innerHTML);
 
+            // add each asset to a row in the table
             assetList.forEach(libAsset => {
                 addAssetToTable(libAsset);
             });
@@ -46,7 +41,7 @@ function refreshTable() {
 // addAssetToTable: take the data from libAsset (a library asset object) and put it
 //  into a row in the asset list table.
 function addAssetToTable(libAsset){
-    // create the row and data elements to add to the asset list table
+    // Create the row and data elements to add to the asset list table
     var newRow = document.createElement('tr');
     var editIcon = document.createElement('td');
     var assetId = document.createElement('td');
@@ -59,16 +54,17 @@ function addAssetToTable(libAsset){
     var loanType = document.createElement('td');
     var interLibLoan = document.createElement('td');
 
-    // create the html for two clickable icons to include in the first column
-    // clicking will bring up a modal to update the item
+    // This is the html for two clickable icons to put in the first column
+    // Clicking the first (pencil) icon will bring up the manage-asset-modal in the 'update' state
+    // Clicking the second (trash) icon will delete the row and its corresponding asset
     var pencilIcon = 
-    `<a href="#" onclick="prepareUpdateForm(this)" data-bs-toggle="modal" data-bs-target="#update-asset-modal">
+    `<a href="#" onclick="editIconClick(this)" data-bs-toggle="modal" data-bs-target="#manage-asset-modal">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
     <title>Edit Asset</title>
     <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
     </svg></a>
-    <a href="#" onclick="deleteFromIcon(this)">
+    <a href="#" onclick="deleteIconClick(this)">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
     <title>Delete Asset</title>
     <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
