@@ -105,22 +105,83 @@ function addAssetToTable(libAsset){
 }
 
 
+function clearAssetForm(){
+    document.getElementById('manage-asset-form').reset();
+    document.getElementById('staticBackdropLabel').innerText = 'Manage Asset';
+    document.getElementById('asset-submit-button').value = 'Submit';
+    document.getElementById('form-state').value = 'default';
+    disableAssetForm(true);
+}
+
+
 // Put manage asset form into the 'create' state when 'Add Asset' is clicked
 document.getElementById('new-asset-anchor').addEventListener('click', function(){
-    alert('New Asset clicked!');
+    // Make sure the form is clear of input
+    document.getElementById('manage-asset-form').reset();
+
+    // Set the header of the modal
+    document.getElementById('staticBackdropLabel').innerText = 'Add New Asset';
+
+    // Set the submit button text
+    document.getElementById('asset-submit-button').value = 'Add Asset';
+
+    // Set the form state so the submit button knows what to do
+    document.getElementById('form-state').value = 'create';
+
+    // Make sure everything except the id field is enabled
+    disableAssetForm(false);
+    document.getElementById('asset-id-input').disabled = true;
+
+    // All fields are required except id and language
+    requireAllFromAssetForm(true);
+    document.getElementById('asset-id-input').required = false;
+    document.getElementById('language-input').required = false;
+
+    // Add some default values
+    document.getElementById('media-type-input').value = 'Hardcover Book';
+    document.getElementById('language-input').value = 'English';
+    document.getElementById('location-input').value = 'Park Hill Library';
+    document.getElementById('loan-type-input').value = 'Two Weeks';
 });
 
 
 // Put manage asset form into the 'update' state when 'Update Asset' is clicked
 document.getElementById('update-asset-anchor').addEventListener('click', function(){
-    alert('Update Asset clicked!');
+    setUpdateFormState();
 });
+
+function setUpdateFormState() {
+    // Make sure the form is clear of input
+    document.getElementById('manage-asset-form').reset();
+
+    // Set the header of the modal
+    document.getElementById('staticBackdropLabel').innerText = 'Update Asset';
+
+    // Set the submit button text
+    document.getElementById('asset-submit-button').value = 'Update Asset';
+
+    // Set the form state so the submit button knows what to do
+    document.getElementById('form-state').value = 'update';
+
+    // Make sure only the id input is enabled
+    disableAssetForm(true);
+    document.getElementById('asset-id-input').disabled = false;
+
+    // All fields are required except language
+    requireAllFromAssetForm(true);
+    document.getElementById('language-input').required = false;
+}
 
 
 // Put manage asset form into the 'update' state.  Load data into the form.
 // Called from anchor around pencil icon in the asset table
 function editIconClick(element) {
-    alert('Edit Icon clicked!');
+    setUpdateFormState();
+
+    selectedRow = element.parentElement.parentElement;
+
+    fillAssetFormFromRow(selectedRow);
+    disableAssetForm(false);
 }
 
 
@@ -141,6 +202,91 @@ function deleteIconClick(element) {
 document.getElementById('manage-asset-form').addEventListener('submit', function(event){
 
 });
+
+
+// Set the disabled attribute of all form elements to the same thing
+// If shouldDisable = true, everything is disabled.  If false, everything is enabled.
+function disableAssetForm(shouldDisable){
+    console.log('disableAssetForm() called');
+    document.getElementById('asset-id-input').disabled = shouldDisable;
+    document.getElementById('title-input').disabled = shouldDisable;
+    document.getElementById('author-input').disabled = shouldDisable;
+    document.getElementById('media-type-input').disabled = shouldDisable;
+    document.getElementById('language-input').disabled = shouldDisable;
+    document.getElementById('collection-input').disabled = shouldDisable;
+    document.getElementById('location-input').disabled = shouldDisable;
+    document.getElementById('loan-type-input').disabled = shouldDisable;
+    document.getElementById('inter-lib-loan-input').disabled = shouldDisable;
+    document.getElementById('asset-submit-button').disabled = shouldDisable;
+}
+
+function requireAllFromAssetForm(shouldRequire){
+    document.getElementById('asset-id-input').required = shouldRequire;
+    document.getElementById('title-input').required = shouldRequire;
+    document.getElementById('author-input').required = shouldRequire;
+    document.getElementById('media-type-input').required = shouldRequire;
+    document.getElementById('language-input').required = shouldRequire;
+    document.getElementById('collection-input').required = shouldRequire;
+    document.getElementById('location-input').required = shouldRequire;
+    document.getElementById('loan-type-input').required = shouldRequire;
+}
+
+
+
+document.getElementById('asset-id-input').addEventListener('focusout', function(event){
+    let state = document.getElementById('form-state').value;
+
+    console.log(state);
+
+    if(state == 'update'){
+        let id = document.getElementById('asset-id-input').value;
+        let rowToUpdate = findRowByAssetId(id);
+    
+        if(rowToUpdate != null){
+            fillAssetFormFromRow(rowToUpdate);
+            disableAssetForm(false);
+        }
+        else{
+            setUpdateFormState();
+            alert('Unable to find matching ID');
+        }
+    }
+});
+
+
+function findRowByAssetId(id){
+    allRows = document.getElementById('asset-list-body').children;
+
+    if( allRows.length <= 0 ){
+        console.log('Nothing in allRows');
+        return null;
+    }
+
+    for(let i=0; i < allRows.length; i++){
+        let data = allRows[i].children;
+        if(data[1].innerText == id)
+            return allRows[i];
+    }
+
+    console.log('No match');
+    return null;
+}
+
+
+function fillAssetFormFromRow(rowData){
+    let data = rowData.children;
+
+    document.getElementById('asset-id-input').value = data[1].innerText;
+    document.getElementById('title-input').value = data[2].innerText;
+    document.getElementById('author-input').value = data[3].innerText;
+    document.getElementById('media-type-input').value = data[4].innerText;
+    document.getElementById('language-input').value = data[5].innerText;
+    document.getElementById('collection-input').value = data[6].innerText;
+    document.getElementById('location-input').value = data[7].innerText;
+    document.getElementById('loan-type-input').value = data[8].innerText;
+    document.getElementById('inter-lib-loan-input').checked = (data[9].innerText == 'Yes'); 
+}
+
 
 /*
 
